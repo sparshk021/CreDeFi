@@ -53,7 +53,8 @@ app.add_middleware(
     allow_headers=["Authorization", "Content-Type", "Accept"],
 )
 
-app.include_router(api_router)
+# All REST routes live under /api so the Next.js client (NEXT_PUBLIC_API_URL=.../api) matches.
+app.include_router(api_router, prefix="/api")
 
 
 # H4: Global exception handler — never leak internal errors

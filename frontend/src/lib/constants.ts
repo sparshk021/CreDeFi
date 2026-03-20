@@ -3,6 +3,15 @@ export const API_URL =
 
 export const CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID ?? "31337");
 
+/** RPC URL used when auto-adding the network to MetaMask (wallet_addEthereumChain). */
+export const CHAIN_RPC_URL =
+  process.env.NEXT_PUBLIC_CHAIN_RPC_URL ?? "http://127.0.0.1:8545";
+
+/** Display name shown in MetaMask when adding the network. */
+export const CHAIN_NAME =
+  process.env.NEXT_PUBLIC_CHAIN_NAME ??
+  (CHAIN_ID === 31337 ? "Hardhat Local" : `Chain ${CHAIN_ID}`);
+
 export const CONTRACT_ADDRESSES = {
   loan: process.env.NEXT_PUBLIC_LOAN_CONTRACT_ADDRESS ?? "",
   vault: process.env.NEXT_PUBLIC_VAULT_CONTRACT_ADDRESS ?? "",

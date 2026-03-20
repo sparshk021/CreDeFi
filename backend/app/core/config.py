@@ -25,6 +25,12 @@ class Settings(BaseSettings):
     CORS_ORIGINS: list[str] = ["http://localhost:3000"]
 
     # Blockchain
+    # Some setups use either the older names (CHAIN_RPC_URL / CHAIN_ID)
+    # or the newer names (RPC_URL only). We accept both so local
+    # `.env` files don't break server startup.
+    CHAIN_RPC_URL: str | None = None
+    CHAIN_ID: int | None = None
+
     RPC_URL: str = "http://127.0.0.1:8545"
     CHAIN_PRIVATE_KEY: str = ""  # deployer/backend signer — set via .env
     LOAN_CONTRACT_ADDRESS: str = ""
@@ -54,6 +60,10 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def _validate_security_settings(self) -> "Settings":
         """Prevent startup with insecure default values."""
+        # If the older env var name is provided, use it.
+        if self.CHAIN_RPC_URL:
+            self.RPC_URL = self.CHAIN_RPC_URL
+
         _INSECURE_JWT_VALUES = {
             "", "change-me-in-production", "secret", "changeme",
         }
